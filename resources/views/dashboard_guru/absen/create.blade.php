@@ -33,9 +33,7 @@
                 @csrf
                 @method('POST')
                 <input type="hidden" name="id_siswa" value="{{ $siswa->id }}">
-                <input type="hidden" name="id_guru" value="{{ $guruId }}">
-                <input type="hidden" name="id_perekam" value="{{ $perekamId }}">
-                <input type="hidden" name="tipe_kehadiran" value="masuk">
+                <input type="hidden" name="id_kelas" value="{{ $kelas }}">
                 <input type="hidden" name="waktu_tap" value="{{ now()->format('Y-m-d H:i:s') }}">
 
                 <div class="mb-4">
@@ -43,9 +41,7 @@
                     <select name="status" id="status"
                         class="mt-1 block w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md focus:border-blue-500 focus:ring-blue-500">
                         <option value="hadir">Hadir</option>
-                        <option value="terlambat">Terlambat</option>
                         <option value="izin">Izin</option>
-                        <option value="sakit">Sakit</option>
                         <option value="alpha">Alpha</option>
                     </select>
                 </div>

@@ -47,6 +47,13 @@ class LaporanController extends Controller
     {
         $guru = auth()->user()->guru;
         $siswaIds = $guru->kelas->siswas->pluck('id');
+        // dd($siswaIds);
+
+        if (!$siswaIds) {
+            return view('dashboard_guru.absen.index', [
+                'message' => 'Tidak ada siswa dalam kelas yang diampu.',
+            ]);
+        }
 
         $tahun = date('Y');
         // $bulanList = ['07', '08']; // atau generate dinamis
@@ -70,10 +77,10 @@ class LaporanController extends Controller
         return view('dashboard_guru.laporan.index', compact('rekapBulanan', 'tahun', 'guru'));
     }
 
-    private function getRekapData($bulan, $tahun, $id_guru)
+    private function getRekapData($bulan, $tahun, $id_kelas)
     {
         // Ambil data siswa wali kelas guru
-        $siswas = Siswa::where('id_guru', $id_guru)->get();
+        $siswas = Siswa::where('id_kelas', $id_kelas)->get();
 
         $rekap = [];
         foreach ($siswas as $siswa) {

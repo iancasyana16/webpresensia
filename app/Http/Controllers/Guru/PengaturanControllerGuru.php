@@ -53,6 +53,6 @@ class PengaturanControllerGuru extends Controller
         $guru->nama_guru = $validated['nama_guru'];
         $guru->save();
 
-        return redirect()->route('dashboard-guru-pengaturan')->with('success', 'Data admin berhasil diperbarui.');
+        return redirect()->route('dashboard-guru-pengaturan')->with('success', 'Data guru berhasil diperbarui.');
     }
 }

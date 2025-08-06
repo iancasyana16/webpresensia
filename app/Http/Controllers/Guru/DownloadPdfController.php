@@ -18,16 +18,17 @@ class DownloadPdfController extends Controller
 
         $guru = auth()->user()->guru;
 
-        $siswaKelas = Siswa::where('id_guru', $guru->id)->get();
+        $siswaKelas = Siswa::where('id_kelas', $guru->kelas->id)->get();
+        // dd($siswaKelas);
         $rekap = $siswaKelas->map(function ($siswa) use ($bulan, $tahun) {
-            $hadir = $siswa->kehadiran()->whereMonth('created_at', $bulan)
-                ->whereYear('created_at', $tahun)->where('status', 'hadir')->count();
+            $hadir = $siswa->kehadiran()->whereMonth('waktu_tap', $bulan)
+                ->whereYear('waktu_tap', $tahun)->where('status', 'hadir')->count();
 
-            $izin = $siswa->kehadiran()->whereMonth('created_at', $bulan)
-                ->whereYear('created_at', $tahun)->where('status', 'izin')->count();
+            $izin = $siswa->kehadiran()->whereMonth('waktu_tap', $bulan)
+                ->whereYear('waktu_tap', $tahun)->where('status', 'izin')->count();
 
-            $alfa = $siswa->kehadiran()->whereMonth('created_at', $bulan)
-                ->whereYear('created_at', $tahun)->where('status', 'alfa')->count();
+            $alfa = $siswa->kehadiran()->whereMonth('waktu_tap', $bulan)
+                ->whereYear('waktu_tap', $tahun)->where('status', 'alfa')->count();
 
             logger("Siswa {$siswa->nama_siswa} - Hadir: $hadir, Izin: $izin, Alfa: $alfa");
 
@@ -54,7 +55,7 @@ class DownloadPdfController extends Controller
         $guru = auth()->user()->guru;
 
         // ambil siswa yang berada di kelas wali guru tsb
-        $siswas = Siswa::where('id_guru', $guru->id)->get();
+        $siswas = Siswa::where('id_kelas', $guru->kelas->id)->get();
 
         $rekap = [];
 

@@ -18,7 +18,7 @@ class IdCardSeeder extends Seeder
         $now = Carbon::now();
         $data = [];
 
-        for ($i = 1; $i <= 60; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $data[] = [
                 'uid' => strtoupper(Str::random(5)),
                 'status' => 'tidak aktif',

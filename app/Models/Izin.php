@@ -8,7 +8,7 @@ class Izin extends Model
 {
     protected $fillable = [
         'id_siswa',
-        'id_guru',
+        'id_kelas',
         'id_perekam',
         'tanggal_izin',
         'alasan',
@@ -18,6 +18,11 @@ class Izin extends Model
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'id_siswa');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'id_kelas');
     }
 
     public function guru()

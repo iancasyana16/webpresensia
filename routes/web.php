@@ -66,6 +66,11 @@ Route::middleware(['auth', RoleMiddleware::class . ':guru'])->group(function () 
     Route::get('/guru/rekap/download/{bulan}/{tahun}', [DownloadPdfController::class, 'downloadRekap'])->name('rekap.download');
     Route::get('/preview-pdf/{bulan}/{tahun}', [DownloadPdfController::class, 'downloadPdf'])->name('preview-pdf');
 
-    route::get('dashboard-guru-pengaturan', [PengaturanControllerGuru::class, 'index'])->name('dashboard-guru-pengaturan');
-    route::put('dashboard-guru-pengaturan', [PengaturanControllerGuru::class, 'update'])->name('update-guru');
+    route::get('/dashboard-guru-pengaturan', [PengaturanControllerGuru::class, 'index'])->name('dashboard-guru-pengaturan');
+    route::put('/dashboard-guru-pengaturan-update', [PengaturanControllerGuru::class, 'update'])->name('update-profile-guru');
 });
+
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');

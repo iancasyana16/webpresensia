@@ -1,6 +1,6 @@
 @extends('layouts.dashboard_admin')
 
-@section('title', 'Dashboard Pengaturan')
+@section('title', config('app.name') . ' | Admin')
 
 @section('content')
 

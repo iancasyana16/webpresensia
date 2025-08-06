@@ -24,7 +24,7 @@ class IzinController extends Controller
     {
         $validated = $request->validate([
             'id_siswa' => 'required|exists:siswas,id',
-            'id_guru' => 'required|exists:gurus,id',
+            'id_kelas' => 'nullable',
             'tanggal_izin' => 'required|date',
             'alasan' => 'required|string',
             'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',

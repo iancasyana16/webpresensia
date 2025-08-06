@@ -72,6 +72,7 @@ class KelasController extends Controller
     public function edit(Kelas $kelas)
     {
         $gurus = Guru::all();
+        // dd($gurus);
         return view('dashboard_admin.kelas.edit', [
             'kelas' => $kelas,
             'gurus' => $gurus,
@@ -85,13 +86,27 @@ class KelasController extends Controller
             'wali_kelas' => 'required|exists:gurus,id',
         ]);
 
+        // Ambil ID guru lama sebelum update
+        $oldGuruId = $kelas->id_guru;
+
+        // Update data kelas
         $kelas->update([
             'nama_kelas' => $validated['nama_kelas'],
             'id_guru' => $validated['wali_kelas'],
         ]);
 
+        // Jika guru lama berbeda dengan guru baru
+        if ($oldGuruId != $validated['wali_kelas']) {
+            // Set guru lama menjadi bukan wali kelas
+            Guru::where('id', $oldGuruId)->update(['wali_kelas' => false]);
+
+            // Set guru baru menjadi wali kelas
+            Guru::where('id', $validated['wali_kelas'])->update(['wali_kelas' => true]);
+        }
+
         return redirect()->route('dashboard-admin-kelas')->with('success', 'Data kelas berhasil diperbarui.');
     }
+
 
     public function destroy(Kelas $kelas)
     {

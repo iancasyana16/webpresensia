@@ -22,11 +22,12 @@ class FetchProfileSiswaController extends Controller
             'data' => [
                 'id' => $siswa->id,
                 'id_user' => $user->id,
+                'id_guru' => $siswa->kelas->wali_kelas->id ?? null,
                 'nis' => $siswa->nis,
                 'nama_siswa' => $siswa->nama_siswa,
                 'gender' => $siswa->gender,
                 'kelas' => $siswa->kelas->nama_kelas ?? null,
-                'guru' => $siswa->Walikelas->nama_guru ?? null,
+                'guru' => $siswa->kelas->wali_kelas->nama_guru ?? null,
                 'uid' => $siswa->idCard->uid ?? null,
             ]
         ]);

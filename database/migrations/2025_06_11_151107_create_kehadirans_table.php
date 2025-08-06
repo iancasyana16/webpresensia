@@ -10,8 +10,9 @@ return new class extends Migration {
         Schema::create('kehadirans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_siswa')->constrained('siswas')->onDelete('cascade');
-            $table->foreignId('id_guru')->constrained('gurus')->onDelete('cascade');
-            $table->foreignId('id_perekam')->constrained('users');
+            // $table->foreignId('id_guru')->constrained('gurus')->onDelete('cascade');
+            $table->foreignId('id_kelas')->constrained('kelas')->onDelete('cascade');
+            // $table->foreignId('id_perekam')->constrained('users');
             $table->timestamp('waktu_tap')->nullable();
             $table->enum('status', ['hadir', 'sakit', 'izin', 'alfa'])->default('hadir');
             $table->text('catatan')->nullable();

@@ -131,9 +131,9 @@ class GuruController extends Controller
         // Cek apakah guru masih memiliki siswa
         // Jika masih memiliki siswa, maka tidak bisa dihapus
         // Jika tidak ada siswa yang berelasi, maka bisa dihapus
-        if ($guru->siswa()->exists()) {
-            return redirect()->back()->with('error', 'Tidak bisa menghapus guru karena masih memiliki siswa.');
-        }
+        // if ($guru->siswa()->exists()) {
+        //     return redirect()->back()->with('error', 'Tidak bisa menghapus guru karena masih memiliki siswa.');
+        // }
 
         // Hapus data guru dan user yang berelasi
         // Pertama kita akan menghapus user yang berelasi dengan guru

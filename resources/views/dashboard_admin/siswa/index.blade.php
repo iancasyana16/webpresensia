@@ -1,5 +1,5 @@
 @extends('layouts.dashboard_admin')
-@section('title', 'Dashboard Siswa')
+@section('title', config('app.name') . ' | Admin')
 @section('content')
     <div class="container p-3 min-h-screen bg-gray-100">
         <div class="p-3">

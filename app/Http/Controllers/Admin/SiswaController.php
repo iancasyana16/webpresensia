@@ -11,17 +11,6 @@ use App\Http\Controllers\Controller;
 
 class SiswaController extends Controller
 {
-    // public function index()
-    // {
-    //     $siswa = Siswa::with(['kelas', 'waliKelas', 'idCard'])->orderBy('nis', 'asc')->paginate(10);
-    //     return view(
-    //         'dashboard_admin.siswa.index',
-    //         [
-    //             'title' => 'Manajemen Siswa',
-    //             'siswas' => $siswa,
-    //         ]
-    //     );
-    // }
     public function index(Request $request)
     {
         $query = $request->input('search');
@@ -38,7 +27,7 @@ class SiswaController extends Controller
             ->paginate(10);
 
         return view('dashboard_admin.siswa.index', [
-            'title' => 'Manajemen Siswa',
+            'title' => 'Manajemen Data Siswa',
             'siswas' => $siswa,
             'search' => $query
         ]);
@@ -81,23 +70,14 @@ class SiswaController extends Controller
 
         if ($user) {
 
-            $kelas = Kelas::find($validasi['kelas']);
-
-            if ($kelas) {
-                $idGuruDariKelas = $kelas->id_guru;
-            } else {
-                $idGuruDariKelas = null;
-            }
-
             Siswa::create(
                 [
+                    'id_user' => $user->id,
                     'nis' => $validasi['nis'],
                     'nama_siswa' => $validasi['nama_siswa'],
                     'gender' => $validasi['gender'],
                     'id_kelas' => $validasi['kelas'],
-                    'id_guru' => $idGuruDariKelas,
                     'id_idCard' => $validasi['idCard'] ?? null,
-                    'id_user' => $user->id,
                 ]
             );
 
@@ -141,14 +121,6 @@ class SiswaController extends Controller
         $oldIdCard = $siswa->id_idCard;
         // dd($oldIdCard);
 
-        $kelas = Kelas::find($validasi['kelas']);
-
-        if ($kelas) {
-            $idGuruDariKelas = $kelas->id_guru;
-        } else {
-            $idGuruDariKelas = null;
-        }
-
         if (!empty($validasi['idCard'])) {
             if ($oldIdCard && $oldIdCard != $validasi['idCard']) {
                 IdCard::where('id', $oldIdCard)->update(['status' => 'tidak aktif']);
@@ -164,7 +136,6 @@ class SiswaController extends Controller
                 'nama_siswa' => $validasi['nama_siswa'],
                 'gender' => $validasi['gender'],
                 'id_kelas' => $validasi['kelas'],
-                'id_guru' => $idGuruDariKelas,
                 'id_idCard' => $validasi['idCard'],
             ]
         );

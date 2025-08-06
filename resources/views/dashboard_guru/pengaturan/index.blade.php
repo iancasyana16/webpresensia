@@ -31,7 +31,7 @@
             </h2>
 
             <div class="container bg-white rounded-xl p-3 shadow-2xl">
-                <form action="{{ Route('update-guru') }}" method="post">
+                <form action="{{ Route('update-profile-guru') }}" method="post">
                     @csrf
                     @method('PUT')
                     <div class="mt-3">

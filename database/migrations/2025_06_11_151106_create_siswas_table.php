@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('nama_siswa');
             $table->enum('gender', ['Laki-laki', 'Perempuan']);
             $table->foreignId('id_kelas')->constrained('kelas')->onDelete('cascade');
-            $table->foreignId('id_guru')->constrained('gurus')->onDelete('cascade');
+            // $table->foreignId('id_guru')->constrained('gurus')->onDelete('cascade');
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_idCard')->nullable()->unique()->constrained('id_cards')->onDelete('cascade');
             $table->timestamps();

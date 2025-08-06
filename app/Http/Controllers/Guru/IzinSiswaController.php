@@ -6,6 +6,7 @@ use App\Models\Izin;
 use App\Models\Siswa;
 use App\Models\Kehadiran;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,17 @@ class IzinSiswaController extends Controller
 {
     public function index()
     {
-        $guruId = auth()->user()->guru->id ?? null;
-        // dd($guruId);
+        $kelas = auth()->user()->guru->kelas ?? null;
+        // dd($kelas);
 
-        $izins = Izin::with('siswa')
-            ->where('id_guru', $guruId)
+        if (!$kelas) {
+            return view('dashboard_guru.absen.index', [
+                'message' => 'Tidak ada siswa dalam kelas yang diampu.',
+            ]);
+        }
+
+        $izins = Izin::with('kelas')
+            ->where('id_kelas', $kelas->id)
             ->orderBy('status')
             ->get();
 
@@ -42,15 +49,20 @@ class IzinSiswaController extends Controller
     {
 
         $izin = Izin::findOrFail($id);
+        $kelas = auth()->user()->guru->kelas;
+        // dd($kelas);
         $izin->status = 'diterima';
         $izin->save();
-        $siswa = Siswa::findOrFail($izin->id_siswa);
+        // $siswa = Siswa::findOrFail($izin->id_siswa);
         Kehadiran::create([
             'id_siswa' => $izin->id_siswa,
-            'id_guru' => $siswa->WaliKelas->id,
-            'tanggal' => $izin->tanggal_izin,
+            'id_perekam' => auth()->user()->id,
+            'waktu_tap' => $izin->tanggal_izin,
+            'id_kelas' => $kelas->id,
             'status' => 'izin', // ditolak, jadi dianggap tidak hadir
         ]);
+
+        // dd($test);
 
         return redirect()->route('dashboard-guru-izin')->with('success', 'Izin disetujui.');
     }
@@ -58,14 +70,17 @@ class IzinSiswaController extends Controller
     public function tolakIzin($id)
     {
         $izin = Izin::findOrFail($id);
+        // dd($izin);
+        $kelas = auth()->user()->guru->kelas;
         $izin->status = 'ditolak';
         $izin->save();
-        $siswa = Siswa::findOrFail($izin->id_siswa);
+        // $siswa = Siswa::findOrFail($izin->id_siswa);
 
         Kehadiran::create([
             'id_siswa' => $izin->id_siswa,
-            'id_guru' => $siswa->waliKelas->id,
-            'tanggal' => $izin->tanggal_izin,
+            'id_perekam' => auth()->user()->id,
+            'id_kelas' => $kelas->id,
+            'waktu_tap' => $izin->tanggal_izin,
             'status' => 'alfa', // ditolak, jadi dianggap tidak hadir
         ]);
 

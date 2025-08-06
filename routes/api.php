@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AbsensiRfidController;
 use App\Http\Controllers\Api\IzinController;
 use App\Http\Controllers\Api\UpdateProfilSiswaController;
-use App\Http\Controllers\Api\IdCardController;
 use App\Http\Controllers\Api\AuthLoginController;
 use App\Http\Controllers\Api\FetchRiwayatIzinController;
 use App\Http\Controllers\Api\FetchProfileSiswaController;
@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\FetchRiwayatKehadiranController;
 
 
 Route::post('/login', [AuthLoginController::class, 'login']);
-Route::post('/scan-card', [IdCardController::class, 'processRfidScan']);
+Route::post('/scan-card', [AbsensiRfidController::class, 'processRfidScan']);
 
 Route::middleware('auth:sanctum')->get('/siswa-profile', [FetchProfileSiswaController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/siswa-attendance', [FetchAttendanceSiswaController::class, 'index']);

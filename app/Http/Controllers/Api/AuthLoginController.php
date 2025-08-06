@@ -62,8 +62,8 @@ class AuthLoginController extends Controller
                 'id' => $user->id,
                 'username' => $user->username,
                 'id_siswa' => $user->siswa->id,
-                'id_guru' => $user->siswa->Walikelas->id,
-                'id_perekam' => $user->siswa->Walikelas->id,
+                'id_kelas' => $user->siswa->kelas->id,
+                'id_perekam' => auth()->user()->id,
                 'id_idCard' => $user->siswa->idCard->uid,
                 'role' => $user->role,
                 'token' => $token, // Token yang baru dibuat

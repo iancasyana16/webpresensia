@@ -25,11 +25,11 @@ class FetchStatistikSiswaController extends Controller
             ->count();
         $izin = Kehadiran::where('id_siswa', $siswa->id)
             ->where('status', 'Izin')
-            ->whereMonth('waktu_tap', Carbon::now()->month)
+            ->whereMonth('created_at', Carbon::now()->month)
             ->count();
         $alfa = Kehadiran::where('id_siswa', $siswa->id)
             ->where('status', 'Alfa')
-            ->whereMonth('waktu_tap', Carbon::now()->month)
+            ->whereMonth('created_at', Carbon::now()->month)
             ->count();
 
         return response()->json([
