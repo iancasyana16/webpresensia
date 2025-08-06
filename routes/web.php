@@ -69,8 +69,3 @@ Route::middleware(['auth', RoleMiddleware::class . ':guru'])->group(function () 
     route::get('/dashboard-guru-pengaturan', [PengaturanControllerGuru::class, 'index'])->name('dashboard-guru-pengaturan');
     route::put('/dashboard-guru-pengaturan-update', [PengaturanControllerGuru::class, 'update'])->name('update-profile-guru');
 });
-
-Route::get('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
