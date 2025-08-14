@@ -34,18 +34,20 @@ class PengaturanController extends Controller
         $validated = $request->validate([
             'nama_admin' => 'required|string|max:255',
             'username' => 'required|string|max:255',
-            'password' => 'nullable|string',
-            'konfirmasi_password' => 'nullable|string',
+            'password' => 'required|string',
+            'konfirmasi_password' => 'required|string',
         ]);
 
         // Update username
         $user->username = $validated['username'];
 
-        // Update password jika diisi
-        if (!empty($validated['password'])) {
+        if ($validated['konfirmasi_password'] !== $validated['password']) {
+            return redirect()->back()->with('error', 'Password dan konfirmasi password tidak cocok.');
+        } else {
             $user->password = Hash::make($validated['password']);
         }
 
+        // Update password jika diisi
         $user->save();
 
         // Update nama admin

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Siswa;
 use App\Models\IdCard;
 use App\Models\Kehadiran;
-use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Events\SiswaAbsenEvent;
+use App\Http\Controllers\Controller;
 
 class AbsensiRfidController extends Controller
 {
@@ -64,7 +65,7 @@ class AbsensiRfidController extends Controller
             }
 
             // Batas waktu absen masuk
-            $batasMasuk = Carbon::createFromTimeString('07:00:00', 'Asia/Jakarta');
+            $batasMasuk = Carbon::createFromTimeString('23:00:00', 'Asia/Jakarta');
             if ($now->greaterThan($batasMasuk)) {
                 return $this->respond('denied', 'hubungi guru', "{$siswa->nama_siswa} tidak bisa absen karena sudah lewat jam 07:00.", 403);
             }
@@ -74,11 +75,13 @@ class AbsensiRfidController extends Controller
                 'id_siswa' => $siswa->id,
                 'uid_rfid' => $uid,
                 'waktu_tap' => $now,
-                'type' => 'masuk',
+                // 'type' => 'masuk',
                 'status' => 'hadir',
-                'id_guru' => $siswa->Walikelas->id ?? null,
-                'id_perekam' => null,
+                'id_kelas' => $siswa->kelas->id ?? null,
+                // 'id_perekam' => null,
             ]);
+
+            broadcast(new SiswaAbsenEvent($siswa));
 
             return response()->json([
                 'status' => 'success',
@@ -86,8 +89,8 @@ class AbsensiRfidController extends Controller
                 'message' => "Absensi berhasil untuk {$siswa->nama_siswa}.",
                 'data' => [
                     'id_siswa' => $siswa->id,
-                    'id_guru' => $absen->id_guru,
-                    'id_perekam' => $absen->id_perekam,
+                    // 'id_guru' => $absen->id_guru,
+                    // 'id_perekam' => $absen->id_perekam,
                     'id_card_uid' => $siswa->idCard->uid ?? null,
                     'nama_siswa' => $siswa->nama_siswa,
                     'uid_rfid' => $uid,
@@ -97,7 +100,7 @@ class AbsensiRfidController extends Controller
             ], 200);
 
         } catch (\Exception $e) {
-            return $this->respond('error', 'absen gagal', 'Gagal mencatat absensi.', 500);
+            return $this->respond('error', 'absen gagal', $e->getMessage(), 500);
         }
     }
 

@@ -3,21 +3,7 @@
 @section('content')
     <div class="container p-3 min-h-screen bg-gray-100">
         <div class="p-3">
-            @if (session('success'))
-                <div id="successToast"
-                    class="fixed top-5 right-5 z-50 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg flex items-center gap-2 animate-fade-in-down">
-                    <strong class="font-bold">
-                        Sukses!
-                    </strong>
-                    <span class="block sm:inline">
-                        {{ session('success') }}
-                    </span>
-                    <button onclick="document.getElementById('successToast').remove()"
-                        class="ml-4 text-green-700 hover:text-red-600 font-bold">
-                        &times;
-                    </button>
-                </div>
-            @endif
+            <x-toast />
             <div class="p-5 bg-white rounded-lg shadow-md mb-3 items-center flex justify-between">
                 <h1 class="text-2xl font-bold">
                     {{ $title ?? 'Dashboard' }}
@@ -36,7 +22,8 @@
                             d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
                             clip-rule="evenodd" />
                     </svg>
-                    <input type="search" name="search" id="search" placeholder="Pencarian" oninput="handleSearchChange()" value="{{ request('search') }}"
+                    <input type="search" name="search" id="search" placeholder="Pencarian" oninput="handleSearchChange()"
+                        value="{{ request('search') }}"
                         class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200 bg-white">
                 </div>
             </div>

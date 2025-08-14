@@ -44,6 +44,8 @@ class IzinController extends Controller
 
         $izin = Izin::create($validated);
 
+        // dd($izin);
+
         return response()->json([
             'message' => 'Izin berhasil diajukan',
             'data' => $izin,

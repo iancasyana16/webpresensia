@@ -6,7 +6,6 @@ use App\Models\Guru;
 use App\Models\IdCard;
 use App\Models\Kelas;
 use App\Models\Siswa;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BerandaController extends Controller
@@ -17,9 +16,8 @@ class BerandaController extends Controller
         $jumlahGuru = Guru::count();
         $jumlahKelas = Kelas::count();
         $jumlahIdCard = IdCard::count();
-        $waliKelas = Kelas::distinct('id_guru')->count('id_guru');
         $title = 'Beranda Admin';
 
-        return view('dashboard_admin.beranda.index', compact('title', 'jumlahSiswa', 'jumlahGuru', 'jumlahKelas', 'jumlahIdCard', 'waliKelas'));
+        return view('dashboard_admin.beranda.index', compact('title', 'jumlahSiswa', 'jumlahGuru', 'jumlahKelas', 'jumlahIdCard'));
     }
 }

@@ -13,6 +13,9 @@ class Guru extends Model
         'mapel', 
         'id_user',
     ];
+
+    // protected $table = 'guru';
+
     public function user()
     {
         return $this->hasOne(User::class);
@@ -23,8 +26,4 @@ class Guru extends Model
         return $this->hasOne(Kelas::class, 'id_guru');
     }
 
-    public function siswa()
-    {
-        return $this->hasMany(Siswa::class, 'id_guru');
-    }
 }

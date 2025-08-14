@@ -3,15 +3,7 @@
 @section('content')
     <div class="container p-3 min-h-screen bg-gray-100">
         <div class="p-3">
-            @if (session('success'))
-                <div id="successToast"
-                    class="fixed top-5 right-5 z-50 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg flex items-center gap-2 animate-fade-in-down">
-                    <strong class="font-bold">Sukses!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                    <button onclick="document.getElementById('successToast').remove()"
-                        class="ml-4 text-green-700 hover:text-red-600 font-bold">&times;</button>
-                </div>
-            @endif
+            <x-toast />
             <div class="p-5 bg-white rounded-lg shadow-md mb-3 items-center flex justify-between">
                 <h1 class="text-2xl font-bold">{{ $title ?? 'Dashboard' }}</h1>
             </div>

@@ -110,7 +110,14 @@ class KelasController extends Controller
 
     public function destroy(Kelas $kelas)
     {
-        Kelas::destroy($kelas->id);
+        // dd($kelas->siswa()->exists());
+        // dd($kelas);
+
+        if ($kelas->siswa()->exists()) {
+            return redirect()->route('dashboard-admin-kelas')->with('error', 'Data kelas tidak dapat dihapus karena memiliki siswa.');
+        }
+
+        $kelas->delete();
 
         return redirect()->route('dashboard-admin-kelas')->with('success', 'Data kelas berhasil dihapus.');
     }

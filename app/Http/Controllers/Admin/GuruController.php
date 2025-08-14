@@ -30,11 +30,6 @@ class GuruController extends Controller
 
     public function create(Guru $guru)
     {
-        // $guru = Guru::all(); ini tidak perlu karena kita hanya ingin menampilkan form untuk menambah data guru yang berelasi
-        // jika ingin menampilkan data guru yang sudah ada, bisa gunakan $guru = Guru::find($id);
-        // namun dalam kasus ini kita hanya ingin menampilkan form untuk menambah data
-        // jika ingin menampilkan data guru yang sudah ada, bisa gunakan $guru = Guru::find($id);
-        // debug pake dd
         return view(
             'dashboard_admin.guru.create',
             [
@@ -46,9 +41,6 @@ class GuruController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi inputan dari form
-        // Validasi ini akan memastikan bahwa inputan yang dimasukkan sesuai dengan aturan yang telah ditentukan
-        // Jika validasi gagal, maka akan mengembalikan pesan error di halaman index
         $validatedData = $request->validate(
             [
                 'nama_guru' => 'required|string|max:255',
@@ -98,10 +90,6 @@ class GuruController extends Controller
 
     public function update(Request $request, Guru $guru)
     {
-
-        // Validasi inputan dari form
-        // Validasi ini akan memastikan bahwa inputan yang dimasukkan sesuai dengan aturan yang telah ditentukan
-        // Jika validasi gagal, maka akan mengembalikan pesan error di halaman edit
         $validatedData = $request->validate(
             [
                 'nama_guru' => 'required|string|max:255',
@@ -127,17 +115,11 @@ class GuruController extends Controller
 
     public function destroy(Guru $guru)
     {
-        // dd($guru->siswa()->exists());
-        // Cek apakah guru masih memiliki siswa
-        // Jika masih memiliki siswa, maka tidak bisa dihapus
-        // Jika tidak ada siswa yang berelasi, maka bisa dihapus
-        // if ($guru->siswa()->exists()) {
-        //     return redirect()->back()->with('error', 'Tidak bisa menghapus guru karena masih memiliki siswa.');
-        // }
+        // dd($guru->kelas()->exists());
+        if ($guru->kelas()->exists()) {
+            return redirect()->back()->with('error', 'Guru ini masih menjadi wali kelas!');
+        }
 
-        // Hapus data guru dan user yang berelasi
-        // Pertama kita akan menghapus user yang berelasi dengan guru
-        // Kemudian kita akan menghapus data guru itu sendiri
         User::destroy($guru->id_user);
         Guru::destroy($guru->id);
 

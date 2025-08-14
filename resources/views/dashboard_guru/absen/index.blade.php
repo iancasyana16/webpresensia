@@ -34,11 +34,11 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($siswas as $index => $siswa)
+                        @forelse($siswas as $index => $siswa)
                             @php
-                                $absen = $kehadiranMap->get($siswa->id);
+        $absen = $kehadiranMap->get($siswa->id);
                             @endphp
-                            <tr class="hover:bg-gray-50">
+                            <tr class="hover:bg-gray-50" id="siswa-{{ $siswa->id }}">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {{ $index + 1 }}
                                 </td>
@@ -51,7 +51,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {{ $siswa->gender }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center status-absen">
                                     @if ($absen)
                                         <span class="text-green-500 font-semibold bg-green-200 px-2 py-1 rounded">
                                             {{ $absen->status }}
@@ -62,12 +62,12 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex justify-center">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex justify-center aksi-absen">
                                     @if ($absen)
                                         -
                                     @else
                                         <button
-                                            class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-200 flex gap-2"
+                                            class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-200 flex gap-2 aksi-absen"
                                             onclick="window.location.href='{{ route('create-absen', ['id' => $siswa->id]) }}'">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                                 class="size-6">
@@ -84,10 +84,54 @@
                                     @endif
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center px-6 py-4 text-gray-500 italic">Belum ada data siswa.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         @endif
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        Pusher.logToConsole = true;
+
+            var pusher = new Pusher('9e1fb5d97e3540f860c2', {
+                cluster: 'ap1'
+            });
+
+            var channel = pusher.subscribe('siswa-absen');
+            channel.bind('SiswaTelahAbsen', function (data) {
+                console.log('Data Siswa Absen:', data);
+
+                var row = document.getElementById('siswa-' + data.siswa.id);
+                if (row) {
+                    console.log('Baris ditemukan:', row);
+
+                    // Update status absen
+                    var statusCell = row.querySelector('.status-absen');
+                    if (statusCell) {
+                        var span = statusCell.querySelector('span');
+                        if (span) {
+                            span.textContent = 'Hadir';
+                            span.classList.remove('text-red-500', 'bg-red-200');
+                            span.classList.add('text-green-600', 'bg-green-200');
+                        }
+                    }
+
+                    // Hilangkan tombol aksi absen
+                    var aksiCell = row.querySelector('.aksi-absen');
+                    if (aksiCell) {
+                        aksiCell.innerHTML = '-';
+                    }
+
+                } else {
+                    console.warn('Tidak ditemukan baris siswa ID:', data.siswa.id);
+                }
+            });
+    </script>
+@endpush

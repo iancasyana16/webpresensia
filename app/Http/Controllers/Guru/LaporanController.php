@@ -15,7 +15,7 @@ class LaporanController extends Controller
         $guru = auth()->user()->guru;
 
         // Ambil siswa dalam kelas yang diampu guru (wali kelas)
-        $siswas = $guru->kelas->siswas; // Pastikan relasi Guru -> Kelas -> Siswa sudah dibuat
+        $siswas = $guru->kelas->siswa; // Pastikan relasi Guru -> Kelas -> Siswa sudah dibuat
 
         $bulan = $request->input('bulan', Carbon::now()->month);
         $tahun = $request->input('tahun', Carbon::now()->year);
@@ -46,14 +46,14 @@ class LaporanController extends Controller
     public function index()
     {
         $guru = auth()->user()->guru;
-        $siswaIds = $guru->kelas->siswas->pluck('id');
-        // dd($siswaIds);
 
-        if (!$siswaIds) {
+        if ($guru->kelas()->doesntExist()) {
             return view('dashboard_guru.absen.index', [
-                'message' => 'Tidak ada siswa dalam kelas yang diampu.',
+                'message' => 'Tidak dapat menyediakan laporan.',
             ]);
         }
+
+        $siswaIds = $guru->kelas->siswa->pluck('id');
 
         $tahun = date('Y');
         // $bulanList = ['07', '08']; // atau generate dinamis

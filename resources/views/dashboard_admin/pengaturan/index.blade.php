@@ -8,15 +8,7 @@
 
         <div class="p-3">
 
-            @if (session('success'))
-                <div id="successToast"
-                    class="fixed top-5 right-5 z-50 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg flex items-center gap-2 animate-fade-in-down">
-                    <strong class="font-bold">Sukses!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                    <button onclick="document.getElementById('successToast').remove()"
-                        class="ml-4 text-green-700 hover:text-red-600 font-bold">&times;</button>
-                </div>
-            @endif
+            <x-toast/> 
 
             @if ($errors->any())
                 <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-3">

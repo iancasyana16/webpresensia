@@ -26,7 +26,11 @@ class IdCardController extends Controller
     }
 
     public function destroy(IdCard $idCard) {
-        IdCard::destroy($idCard->id);
+        // dd($idCard->siswa()->exists());
+        if ($idCard->siswa()->exists()) {
+            return redirect()->route('dashboard-admin-idCard')->with('error','Data ID Card tidak dapat dihapus karena masih terikat dengan Siswa');
+        }
+        $idCard->delete();
         return redirect()->route('dashboard-admin-idCard')->with('success','Data ID Card Berhasil Dihapus');
     }
 }

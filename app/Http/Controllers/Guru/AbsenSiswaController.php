@@ -23,7 +23,7 @@ class AbsenSiswaController extends Controller
             ]);
         }
 
-        $siswas = $kelas->siswas;
+        $siswas = $kelas->siswa;
         $today = now()->toDateString();
 
         $kehadiranHariIni = Kehadiran::whereDate('waktu_tap', $today)

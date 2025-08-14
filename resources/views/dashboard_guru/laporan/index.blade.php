@@ -65,7 +65,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center px-6 py-4 text-gray-500 italic">Belum ada data izin.</td>
+                            <td colspan="6" class="text-center px-6 py-4 text-gray-500 italic">Belum ada data.</td>
                         </tr>
                     @endforelse
                 </tbody>
