@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_admin');
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_user');
+            $table->string('nama');
             $table->timestamps();
         });
     }

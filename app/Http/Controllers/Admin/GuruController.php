@@ -16,10 +16,10 @@ class GuruController extends Controller
         $query = $request->input('search');
 
         $gurus = Guru::when($query, function ($q) use ($query) {
-            $q->where('nama_guru', 'like', '%' . $query . '%')
+            $q->where('nama', 'like', '%' . $query . '%')
                 ->orWhere('nip', 'like', '%' . $query . '%')
                 ->orWhere('mapel', 'like', '%' . $query . '%');
-        })->orderBy('nama_guru')->paginate(5);
+        })->orderBy('nama')->paginate(5);
 
         return view('dashboard_admin.guru.index', [
             'title' => 'Manajemen Data Guru',
@@ -46,7 +46,6 @@ class GuruController extends Controller
                 'nama_guru' => 'required|string|max:255',
                 'nip' => 'required|numeric',
                 'gender' => 'required|in:Laki-laki,Perempuan',
-                'mapel' => 'required',
             ]
         );
 
@@ -63,10 +62,9 @@ class GuruController extends Controller
         if($user) {
             Guru::create(
                 [
-                    'nama_guru' => $validatedData['nama_guru'],
+                    'nama' => $validatedData['nama_guru'],
                     'nip' => $validatedData['nip'],
                     'gender' => $validatedData['gender'],
-                    'mapel' => $validatedData['mapel'],
                     'id_user' => $user->id,
                 ]
             );
@@ -95,17 +93,15 @@ class GuruController extends Controller
                 'nama_guru' => 'required|string|max:255',
                 'nip' => 'required|numeric',
                 'gender' => 'required|in:Laki-laki,Perempuan',
-                'mapel' => 'required',
             ]
         );
 
         // Update data guru dengan data yang telah divalidasi
         $guru->update(
             [
-                'nama_guru' => $validatedData['nama_guru'],
+                'nama' => $validatedData['nama_guru'],
                 'nip' => $validatedData['nip'],
                 'gender' => $validatedData['gender'],
-                'mapel' => $validatedData['mapel'],
             ]
         );
 

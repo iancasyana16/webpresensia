@@ -18,7 +18,7 @@
             <div>
                 <label class="block text-sm font-medium mb-2 text-gray-700">Nama</label>
                 <div class="p-3 bg-red-100 rounded shadow-md">
-                    {{ $siswa->nama_siswa }}
+                    {{ $siswa->nama }}
                 </div>
             </div>
             <div>
@@ -42,7 +42,7 @@
                         class="mt-1 block w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md focus:border-blue-500 focus:ring-blue-500">
                         <option value="hadir">Hadir</option>
                         <option value="izin">Izin</option>
-                        <option value="alpha">Alpha</option>
+                        <option value="alfa">Alfa</option>
                     </select>
                 </div>
 

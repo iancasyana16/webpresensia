@@ -37,7 +37,7 @@ class AdminUserSeeder extends Seeder
         // lalu memperbaruinya, atau membuatnya jika belum ada.
         $adminProfile->admin()->updateOrCreate(
             [
-                'nama_admin' => 'Administrator Utama',
+                'nama' => 'Administrator Utama',
                 'id_user' => $adminProfile->id,
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -6,7 +6,7 @@
     <div class="container min-h-screen p-3 bg-gray-100">
         <div class="p-3">
 
-            <x-toast />
+            <x-modal.toast />
 
             <div class="p-5 bg-white rounded-lg shadow-md mb-3 flex items-center justify-between">
                 <h1 class="text-2xl font-bold">

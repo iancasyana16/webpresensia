@@ -15,17 +15,17 @@ class IzinSiswaController extends Controller
 {
     public function index()
     {
-        $kelas = auth()->user()->guru->kelas ?? null;
+        $guru = auth()->user()->guru ?? null;
         // dd($kelas);
 
-        if (!$kelas) {
+        if (!$guru) {
             return view('dashboard_guru.absen.index', [
                 'message' => 'Tidak ada siswa dalam kelas yang diampu.',
             ]);
         }
 
-        $izins = Izin::with('kelas')
-            ->where('id_kelas', $kelas->id)
+        $izins = Izin::with('guru')
+            ->where('id_guru', $guru->id)
             ->orderBy('status')
             ->get();
 

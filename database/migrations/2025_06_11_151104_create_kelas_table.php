@@ -9,8 +9,9 @@ return new class extends Migration {
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kelas')->unique();
-            $table->foreignId('id_guru')->constrained('gurus')->onDelete('cascade');
+            $table->string('nama');
+            $table->integer('tingkat');
+            $table->foreignId('id_guru')->nullable();
             $table->timestamps();
         });
     }

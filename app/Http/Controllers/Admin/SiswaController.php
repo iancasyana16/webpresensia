@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\IdCard;
+use App\Models\Angkatan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +16,7 @@ class SiswaController extends Controller
     {
         $query = $request->input('search');
 
-        $siswa = Siswa::with(['kelas', 'waliKelas', 'idCard'])
+        $siswa = Siswa::with(['kelas', 'idCard'])
             ->when($query, function ($q) use ($query) {
                 $q->where('nama_siswa', 'like', '%' . $query . '%')
                     ->orWhere('nis', 'like', '%' . $query . '%')
@@ -35,7 +36,8 @@ class SiswaController extends Controller
 
     public function create()
     {
-        $kelas = Kelas::all();
+        $kelas = Kelas::pluck('nama', 'id');
+        $angkatans = Angkatan::pluck('nama', 'id');
         $idCards = IdCard::where('status', 'tidak aktif')->orderBy('uid', 'asc')->get(); // idCard yang belum dipakai
 
         return view(
@@ -44,6 +46,7 @@ class SiswaController extends Controller
                 'title' => 'Tambah Siswa Baru',
                 'kelas' => $kelas,
                 'idCards' => $idCards,
+                'angkatans' => $angkatans,
             ]
         );
     }
@@ -118,25 +121,23 @@ class SiswaController extends Controller
             ]
         );
 
-        $oldIdCard = $siswa->id_idCard;
-        // dd($oldIdCard);
+        $idCard = $validasi['idCard'];
+        // dd($idCard);
 
         if (!empty($validasi['idCard'])) {
-            if ($oldIdCard && $oldIdCard != $validasi['idCard']) {
-                IdCard::where('id', $oldIdCard)->update(['status' => 'tidak aktif']);
-
-                // Aktifkan ID Card baru (selalu dijalankan jika ada ID Card baru)
-                IdCard::where('id', $validasi['idCard'])->update(['status' => 'aktif']);
-            } 
+            if ($idCard && $idCard != $validasi['idCard']) {
+                IdCard::where('id', $idCard)->update(['status' => 'tidak aktif']);
+            }
+            IdCard::where('id', $validasi['idCard'])->update(['status' => 'aktif']);
         }
 
         $siswa->update(
             [
                 'nis' => $validasi['nis'],
-                'nama_siswa' => $validasi['nama_siswa'],
+                'nama' => $validasi['nama_siswa'],
                 'gender' => $validasi['gender'],
                 'id_kelas' => $validasi['kelas'],
-                'id_idCard' => $validasi['idCard'],
+                'id_card' => $validasi['idCard'],
             ]
         );
         // dd($siswa->update());

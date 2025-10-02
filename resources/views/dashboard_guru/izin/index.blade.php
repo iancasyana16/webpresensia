@@ -2,7 +2,7 @@
 @section('title', 'Data Izin Siswa')
 @section('content')
     <div class="container p-5">
-        <h2 class="text-2xl font-bold mb-4 bg-white p-3 shadow-2xl rounded-xl">Daftar Izin Siswa</h2>
+        <h2 class="text-2xl font-bold mb-4 bg-white p-3 shadow-2xl rounded-lg">Daftar Izin Siswa</h2>
         @if (session('success'))
             <div id="successToast"
                 class="fixed top-5 right-5 z-50 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg flex items-center gap-2 animate-fade-in-down">
@@ -28,6 +28,7 @@
                     <thead class="bg-sky-800">
                         <tr class="text-white">
                             <th class="px-6 py-3 text-left text-sm font-semibold">No</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold">NIS</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold">Nama Siswa</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold">Tanggal</th>
                             <th class="px-6 py-3 text-center text-sm font-semibold">Status</th>
@@ -38,7 +39,8 @@
                         @forelse($izins as $index => $izin)
                             <tr>
                                 <td class="px-6 py-4 text-sm">{{ $index + 1 }}</td>
-                                <td class="px-6 py-4 text-sm">{{ $izin->siswa->nama_siswa ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm">{{ $izin->siswa->nis ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm">{{ $izin->siswa->nama ?? '-' }}</td>
                                 <td class="px-6 py-4 text-sm">
                                     {{ \Carbon\Carbon::parse($izin->tanggal_izin)->translatedFormat('d F Y') }}</td>
                                 <td class="px-6 py-4 text-sm text-center">

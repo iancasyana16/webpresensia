@@ -21,27 +21,27 @@ class DownloadPdfController extends Controller
         $siswaKelas = Siswa::where('id_kelas', $guru->kelas->id)->get();
         // dd($siswaKelas);
         $rekap = $siswaKelas->map(function ($siswa) use ($bulan, $tahun) {
-            $hadir = $siswa->kehadiran()->whereMonth('waktu_tap', $bulan)
-                ->whereYear('waktu_tap', $tahun)->where('status', 'hadir')->count();
+            $hadir = $siswa->kehadiran()->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)->where('status', 'hadir')->count();
 
-            $izin = $siswa->kehadiran()->whereMonth('waktu_tap', $bulan)
-                ->whereYear('waktu_tap', $tahun)->where('status', 'izin')->count();
+            $izin = $siswa->kehadiran()->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)->where('status', 'izin')->count();
 
-            $alfa = $siswa->kehadiran()->whereMonth('waktu_tap', $bulan)
-                ->whereYear('waktu_tap', $tahun)->where('status', 'alfa')->count();
+            $alfa = $siswa->kehadiran()->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)->where('status', 'alfa')->count();
 
-            logger("Siswa {$siswa->nama_siswa} - Hadir: $hadir, Izin: $izin, Alfa: $alfa");
+            logger("Siswa {$siswa->nama} - Hadir: $hadir, Izin: $izin, Alfa: $alfa");
 
             return [
                 'nis' => $siswa->nis,
-                'nama' => $siswa->nama_siswa,
+                'nama' => $siswa->nama,
                 'hadir' => $hadir,
                 'izin' => $izin,
                 'alfa' => $alfa,
             ];
         });
 
-        $pdf = Pdf::loadView('dashboard_guru.laporan.pdf', compact('rekap', 'bulan', 'tahun', 'guru'));
+        $pdf = Pdf::loadView('dashboard_guru.laporan.rekapBulanan', compact('rekap', 'bulan', 'tahun', 'guru'));
 
         return $preview
             ? $pdf->stream("preview-rekap-kehadiran-{$bulan}-{$tahun}.pdf")
@@ -61,23 +61,23 @@ class DownloadPdfController extends Controller
 
         foreach ($siswas as $siswa) {
             $hadir = $siswa->kehadiran()
-                ->whereMonth('waktu_tap', $bulan)
-                ->whereYear('waktu_tap', $tahun)
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
                 ->where('status', 'hadir')->count();
 
             $izin = $siswa->kehadiran()
-                ->whereMonth('waktu_tap', $bulan)
-                ->whereYear('waktu_tap', $tahun)
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
                 ->where('status', 'izin')->count();
 
             $alfa = $siswa->kehadiran()
-                ->whereMonth('waktu_tap', $bulan)
-                ->whereYear('waktu_tap', $tahun)
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
                 ->where('status', 'alfa')->count();
 
             $rekap[] = [
                 'nis' => $siswa->nis,
-                'nama' => $siswa->nama_siswa,
+                'nama' => $siswa->nama,
                 'hadir' => $hadir,
                 'izin' => $izin,
                 'alfa' => $alfa,

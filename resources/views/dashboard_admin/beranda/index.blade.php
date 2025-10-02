@@ -12,7 +12,7 @@
                 <h2 class="text-xl font-semibold mb-4">Selamat Datang !</h2>
                 <p class="text-gray-700">
                     <span class="font-bold">
-                        {{Auth::user()->admin()->first()->nama_admin}}
+                        {{Auth::user()->admin()->first()->nama}}
                     </span>
                     Anda telah berhasil masuk
                     ke dashboard. Di sini Anda dapat

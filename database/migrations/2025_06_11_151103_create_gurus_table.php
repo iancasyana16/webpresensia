@@ -9,12 +9,10 @@ return new class extends Migration {
     {
         Schema::create('gurus', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_guru');
+            $table->foreignId('id_user');
+            $table->string('nama');
             $table->string('nip');
-            $table->enum('mapel', ['Matematika', 'Bahasa Indonesia', 'IPA', 'IPS', 'Bahasa Inggris', 'PAI',]);
-            $table->boolean('wali_kelas')->default(false);
             $table->enum('gender', ['Laki-laki', 'Perempuan']);
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

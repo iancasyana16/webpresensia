@@ -35,7 +35,10 @@
                                 No
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-white tracking-wider">
-                                Ruang Kelas
+                                Kelas
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white tracking-wider">
+                                Tingkat
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-white tracking-wider">
                                 Wali Kelas
@@ -52,10 +55,13 @@
                                     {{ $kelas->firstItem() + $index }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $item->nama_kelas }}
+                                    {{ $item->nama }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $item->wali_kelas->nama_guru }}
+                                    {{ $item->tingkat }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ $item->guru->nama }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                                     <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 cursor-pointer">

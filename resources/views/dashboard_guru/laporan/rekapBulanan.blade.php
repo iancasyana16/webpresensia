@@ -18,6 +18,10 @@
             margin-bottom: 20px;
         }
 
+        .center {
+            text-align: center;
+        }
+
         .header h1 {
             margin: 0;
             font-size: 20px;
@@ -79,10 +83,10 @@
         <p>Telp. (0341) 123456 | Email: info@sdcontoh.sch.id</p>
     </div>
 
-    <h2 style="text-align:center;">Rekap Kehadiran Siswa</h2>
-    <p style="">Bulan: {{ $bulan }} / {{ $tahun }}</p>
-    <p style="">Kelas: {{ $guru->kelas->nama_kelas }}</p>
-    <p style="">Wali Kelas: {{ $guru->nama_guru }}</p>
+    <h2 class="center">Rekap Kehadiran Siswa</h2>
+    <p>Bulan: {{ $bulan }} / {{ $tahun }}</p>
+    <p>Kelas: {{ $guru->kelas->nama }}</p>
+    <p>Wali Kelas: {{ $guru->nama }}</p>
 
     <table>
         <thead>
@@ -114,7 +118,7 @@
             <p>Tukdana, <span>{{ date('d-m-Y') }}</span></p>
             <p>Wali Kelas</p>
             <div class="space"></div>
-            <p><strong>{{ $guru->nama_guru }}</strong></p>
+            <p><strong>{{ $guru->nama }}</strong></p>
             <p>NIP: {{ $guru->nip ?? '-' }}</p>
         </div>
     </div>

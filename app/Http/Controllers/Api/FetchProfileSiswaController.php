@@ -13,7 +13,7 @@ class FetchProfileSiswaController extends Controller
     {
         $user = $request->user();
 
-        $siswa = Siswa::with(['kelas', 'Walikelas', 'idCard'])
+        $siswa = Siswa::with(['kelas', 'idCard'])
             ->where('id', $user->siswa->id)
             ->first();
 
@@ -22,12 +22,12 @@ class FetchProfileSiswaController extends Controller
             'data' => [
                 'id' => $siswa->id,
                 'id_user' => $user->id,
-                'id_guru' => $siswa->kelas->wali_kelas->id ?? null,
+                'id_guru' => $siswa->kelas->guru->id ?? null,
                 'nis' => $siswa->nis,
-                'nama_siswa' => $siswa->nama_siswa,
+                'nama_siswa' => $siswa->nama,
                 'gender' => $siswa->gender,
-                'kelas' => $siswa->kelas->nama_kelas ?? null,
-                'guru' => $siswa->kelas->wali_kelas->nama_guru ?? null,
+                'kelas' => $siswa->kelas->nama ?? null,
+                'guru' => $siswa->kelas->guru->nama ?? null,
                 'uid' => $siswa->idCard->uid ?? null,
             ]
         ]);

@@ -26,7 +26,7 @@
                 </div>
             @endif
 
-            <h2 class="text-2xl font-bold mb-4 bg-white p-3 shadow-2xl rounded-xl">
+            <h2 class="text-2xl font-bold mb-4 bg-white p-3 shadow-2xl rounded-lg">
                 Pengaturan
             </h2>
 
@@ -49,7 +49,7 @@
                             </div>
                             <input type="text" name="nama_guru" id="nama_guru" placeholder="Nama guru"
                                 class="w-full bg-white border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
-                                value="{{ old('nama_guru', $guru->nama_guru) }}">
+                                value="{{ old('nama_guru', $guru->nama) }}">
                         </div>
                     </div>
                     <div class="mt-3">

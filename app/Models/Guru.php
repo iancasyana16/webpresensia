@@ -8,7 +8,7 @@ class Guru extends Model
 {
     protected $fillable = [
         'nip', 
-        'nama_guru', 
+        'nama', 
         'gender', 
         'mapel', 
         'id_user',
@@ -24,6 +24,11 @@ class Guru extends Model
     public function kelas()
     {
         return $this->hasOne(Kelas::class, 'id_guru');
+    }
+
+    public function izin()
+    {
+        return $this->hasMany(Izin::class, 'id_guru');
     }
 
 }

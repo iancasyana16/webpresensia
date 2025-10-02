@@ -9,8 +9,9 @@ class Izin extends Model
     protected $fillable = [
         'id_siswa',
         'id_kelas',
+        'id_guru',
         'id_perekam',
-        'tanggal_izin',
+        'tanggal',
         'alasan',
         'bukti',
     ];

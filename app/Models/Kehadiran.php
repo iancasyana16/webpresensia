@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kehadiran extends Model
 {
     protected $table = 'kehadirans';
-    protected $fillable = ['id_siswa', 'id_kelas', 'waktu_tap', 'status', 'catatan'];
+    protected $fillable = ['id_siswa', 'id_kelas', 'id_semester', 'tanggal','jam', 'status', 'catatan'];
     protected $casts = ['waktu_tap' => 'datetime'];
 
     public function siswa()
@@ -21,5 +21,10 @@ class Kehadiran extends Model
     public function waliKelas()
     {
         return $this->belongsTo(User::class, 'id_guru');
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class, 'id_semester');
     }
 }

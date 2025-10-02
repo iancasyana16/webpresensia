@@ -2,9 +2,7 @@
 @section('title', 'Dashboard Siswa')
 @section('content')
     <div class="container p-5">
-        <h2 class="text-2xl font-bold mb-4 bg-white p-3 shadow-2xl rounded-xl">
-            Daftar Absensi Siswa
-        </h2>
+        <x-title>Daftar Absensi Siswa</x-title>
         @if (session('success'))
             <div id="successToast"
                 class="fixed top-5 right-5 z-50 bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded shadow-lg flex items-center gap-2 animate-fade-in-down">
@@ -20,38 +18,26 @@
             </div>
         @else
             <div class="overflow-x-auto rounded-xl drop-shadow-2xl border-4 border-white">
-                <table class="min-w-full divide-y divide-gray-200 rounded-lg">
-                    <thead class="bg-sky-800">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-white tracking-wider">No</th>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-white tracking-wider">NIS</th>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-white tracking-wider">Nama Siswa
-                            </th>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-white tracking-wider">Gender</th>
-                            <th class="px-6 py-3 text-center text-sm font-semibold text-white tracking-wider">Status
-                            </th>
-                            <th class="px-6 py-3 text-center text-sm font-semibold text-white tracking-wider">Opsi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                <x-table.body>
+                    <x-slot:head>
+                        <x-table.th>No</x-table.th>
+                        <x-table.th>NIS</x-table.th>
+                        <x-table.th>Nama Siswa</x-table.th>
+                        <x-table.th>Gender</x-table.th>
+                        <x-table.th>Status</x-table.th>
+                        <x-table.th>Opsi</x-table.th>
+                    </x-slot:head>
+                    <x-slot:body>
                         @forelse($siswas as $index => $siswa)
                             @php
-        $absen = $kehadiranMap->get($siswa->id);
+                                $absen = $kehadiranMap->get($siswa->id);
                             @endphp
-                            <tr class="hover:bg-gray-50" id="siswa-{{ $siswa->id }}">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $index + 1 }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $siswa->nis }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $siswa->nama_siswa }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $siswa->gender }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center status-absen">
+                            <x-table.tr id="siswa-{{ $siswa->id }}">
+                                <x-table.td> {{ $index + 1 }} </x-table.td>
+                                <x-table.td> {{ $siswa->nis }} </x-table.td>
+                                <x-table.td> {{ $siswa->nama }} </x-table.td>
+                                <x-table.td> {{ $siswa->gender }} </x-table.td>
+                                <x-table.td class="status-absen">
                                     @if ($absen)
                                         <span class="text-green-500 font-semibold bg-green-200 px-2 py-1 rounded">
                                             {{ $absen->status }}
@@ -61,8 +47,8 @@
                                             Belum Absen
                                         </span>
                                     @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex justify-center aksi-absen">
+                                </x-table.td>
+                                <x-table.td class="aksi-absen">
                                     @if ($absen)
                                         -
                                     @else
@@ -82,15 +68,15 @@
                                             <span class="font-semibold">Absen</span>
                                         </button>
                                     @endif
-                                </td>
-                            </tr>
+                                </x-table.td>
+                            </x-table.tr>
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center px-6 py-4 text-gray-500 italic">Belum ada data siswa.</td>
                             </tr>
                         @endforelse
-                    </tbody>
-                </table>
+                    </x-slot:body>
+                </x-table.body>
             </div>
         @endif
     </div>
@@ -100,38 +86,38 @@
     <script>
         Pusher.logToConsole = true;
 
-            var pusher = new Pusher('9e1fb5d97e3540f860c2', {
-                cluster: 'ap1'
-            });
+        var pusher = new Pusher('9e1fb5d97e3540f860c2', {
+            cluster: 'ap1'
+        });
 
-            var channel = pusher.subscribe('siswa-absen');
-            channel.bind('SiswaTelahAbsen', function (data) {
-                console.log('Data Siswa Absen:', data);
+        var channel = pusher.subscribe('siswa-absen');
+        channel.bind('SiswaTelahAbsen', function (data) {
+            console.log('Data Siswa Absen:', data);
 
-                var row = document.getElementById('siswa-' + data.siswa.id);
-                if (row) {
-                    console.log('Baris ditemukan:', row);
+            var row = document.getElementById('siswa-' + data.siswa.id);
+            if (row) {
+                console.log('Baris ditemukan:', row);
 
-                    // Update status absen
-                    var statusCell = row.querySelector('.status-absen');
-                    if (statusCell) {
-                        var span = statusCell.querySelector('span');
-                        if (span) {
-                            span.textContent = 'Hadir';
-                            span.classList.remove('text-red-500', 'bg-red-200');
-                            span.classList.add('text-green-600', 'bg-green-200');
-                        }
+                // Update status absen
+                var statusCell = row.querySelector('.status-absen');
+                if (statusCell) {
+                    var span = statusCell.querySelector('span');
+                    if (span) {
+                        span.textContent = 'Hadir';
+                        span.classList.remove('text-red-500', 'bg-red-200');
+                        span.classList.add('text-green-600', 'bg-green-200');
                     }
-
-                    // Hilangkan tombol aksi absen
-                    var aksiCell = row.querySelector('.aksi-absen');
-                    if (aksiCell) {
-                        aksiCell.innerHTML = '-';
-                    }
-
-                } else {
-                    console.warn('Tidak ditemukan baris siswa ID:', data.siswa.id);
                 }
-            });
+
+                // Hilangkan tombol aksi absen
+                var aksiCell = row.querySelector('.aksi-absen');
+                if (aksiCell) {
+                    aksiCell.innerHTML = '-';
+                }
+
+            } else {
+                console.warn('Tidak ditemukan baris siswa ID:', data.siswa.id);
+            }
+        });
     </script>
 @endpush

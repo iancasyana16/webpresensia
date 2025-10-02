@@ -10,6 +10,44 @@ use App\Http\Controllers\Controller;
 
 class LaporanController extends Controller
 {
+    public function index()
+    {
+        $guru = auth()->user()->guru;
+
+        if ($guru->kelas()->doesntExist()) {
+            return view('dashboard_guru.absen.index', [
+                'message' => 'Tidak dapat menyediakan laporan.',
+            ]);
+        }
+
+        $siswaList = $guru->kelas->siswa;
+        $tahun = date('Y');
+        $bulanSekarang = date('n');
+        $semesterAktif = ($bulanSekarang >= 1 && $bulanSekarang <= 6) ? "Ganjil" : "Genap";
+
+        // === Data bulan ini ===
+        $rekapBulanan = [];
+
+        foreach ($siswaList as $siswa) {
+            $kehadiranBulan = Kehadiran::where('id_siswa', $siswa->id)
+                ->whereYear('tanggal', $tahun)
+                ->whereMonth('tanggal', $bulanSekarang)
+                ->get();
+
+            $rekapBulanan[] = [
+                'nis' => $siswa->nis,
+                'nama' => $siswa->nama,
+                'hadir' => $kehadiranBulan->where('status', 'hadir')->count(),
+                'izin' => $kehadiranBulan->where('status', 'izin')->count(),
+                'alpha' => $kehadiranBulan->where('status', 'alfa')->count(),
+            ];
+        }
+
+        return view('dashboard_guru.laporan.index', compact('rekapBulanan', 'tahun', 'guru', 'semesterAktif', 'bulanSekarang'));
+    }
+
+
+
     public function rekapKelas(Request $request)
     {
         $guru = auth()->user()->guru;
@@ -22,18 +60,20 @@ class LaporanController extends Controller
 
         $rekap = $siswas->map(function ($siswa) use ($bulan, $tahun) {
             $kehadiran = $siswa->kehadiran()
-                ->whereMonth('waktu_tap', $bulan)
-                ->whereYear('waktu_tap', $tahun)
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
                 ->get();
 
             return [
                 'nis' => $siswa->nis,
-                'nama' => $siswa->nama_siswa,
+                'nama' => $siswa->nama,
                 'hadir' => $kehadiran->where('status', 'hadir')->count(),
                 'izin' => $kehadiran->where('status', 'izin')->count(),
                 'alfa' => $kehadiran->where('status', 'alfa')->count(),
             ];
         });
+
+        // dd($rekap);
 
         return view('dashboard_guru.izin.laporan', [
             'rekap' => $rekap,
@@ -43,39 +83,39 @@ class LaporanController extends Controller
         ]);
     }
 
-    public function index()
-    {
-        $guru = auth()->user()->guru;
+    // public function index()
+    // {
+    //     $guru = auth()->user()->guru;
 
-        if ($guru->kelas()->doesntExist()) {
-            return view('dashboard_guru.absen.index', [
-                'message' => 'Tidak dapat menyediakan laporan.',
-            ]);
-        }
+    //     if ($guru->kelas()->doesntExist()) {
+    //         return view('dashboard_guru.absen.index', [
+    //             'message' => 'Tidak dapat menyediakan laporan.',
+    //         ]);
+    //     }
 
-        $siswaIds = $guru->kelas->siswa->pluck('id');
+    //     $siswaIds = $guru->kelas->siswa->pluck('id');
 
-        $tahun = date('Y');
-        // $bulanList = ['07', '08']; // atau generate dinamis
-        // $rekapBulanan = [];
-        $bulanList = Kehadiran::whereIn('id_siswa', $siswaIds)
-            ->whereYear('waktu_tap', $tahun)
-            ->selectRaw('MONTH(waktu_tap) as bulan')
-            ->distinct()
-            ->pluck('bulan')
-            ->mapWithKeys(function ($bulan) {
-                return [$bulan => Carbon::create()->month($bulan)->translatedFormat('n')];
-            })
-            ->sortKeys();
+    //     $tahun = date('Y');
+    //     // $bulanList = ['07', '08']; // atau generate dinamis
+    //     // $rekapBulanan = [];
+    //     $bulanList = Kehadiran::whereIn('id_siswa', $siswaIds)
+    //         ->whereYear('tanggal', $tahun)
+    //         ->selectRaw('MONTH(tanggal) as bulan')
+    //         ->distinct()
+    //         ->pluck('bulan')
+    //         ->mapWithKeys(function ($bulan) {
+    //             return [$bulan => Carbon::create()->month($bulan)->translatedFormat('n')];
+    //         })
+    //         ->sortKeys();
 
-        $rekapBulanan = [];
+    //     $rekapBulanan = [];
 
-        foreach ($bulanList as $kodeBulan => $namaBulan) {
-            $rekapBulanan[$namaBulan] = $this->getRekapData($kodeBulan, $tahun, $guru->id);
-        }
+    //     foreach ($bulanList as $kodeBulan => $namaBulan) {
+    //         $rekapBulanan[$namaBulan] = $this->getRekapData($kodeBulan, $tahun, $guru->id);
+    //     }
 
-        return view('dashboard_guru.laporan.index', compact('rekapBulanan', 'tahun', 'guru'));
-    }
+    //     return view('dashboard_guru.laporan.index', compact('rekapBulanan', 'tahun', 'guru'));
+    // }
 
     private function getRekapData($bulan, $tahun, $id_kelas)
     {

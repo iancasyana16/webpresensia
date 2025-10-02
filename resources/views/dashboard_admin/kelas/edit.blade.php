@@ -17,8 +17,25 @@
                             Nama Kelas
                         </label>
                         <input type="text" name="nama_kelas" id="nama_kelas" required
-                            value="{{ old('nama_kelas', $kelas->nama_kelas) }}"
+                            value="{{ old('nama_kelas', $kelas->nama) }}"
                             class="mt-1 block w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tingkat" name="tingkat" class="block text-md font-bold">Tingkat</label>
+                        <div class="flex flex-wrap gap-4 mt-1 w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md">
+                            @for ($i = 1; $i <= 6; $i++)
+                                <label class="inline-flex items-center space-x-2">
+                                    <input type="radio" name="tingkat" value="{{ $i }}"
+                                        class="text-blue-600 focus:ring-blue-500 border-gray-300 rounded" {{ old('tingkat', $kelas->tingkat ?? '') == $i ? 'checked' : '' }}>
+                                    <span class="text-gray-700">Tingkat {{ $i }}</span>
+                                </label>
+                            @endfor
+                        </div>
+                        @error('tingkat')
+                            <div class="text-red-500 mt-1 text-sm">
+                                Periksa Tingkat Kelas
+                            </div>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="wali_kelas" class="block text-md font-bold">
@@ -31,7 +48,7 @@
                             </option>
                             @foreach ($gurus as $guru)
                                 <option value="{{ $guru->id }}" {{ old('wali_kelas', $kelas->id_guru) == $guru->id ? 'selected' : '' }}>
-                                    {{ $guru->nama_guru }}
+                                    {{ $guru->nama }}
                                 </option>
                             @endforeach
                         </select>

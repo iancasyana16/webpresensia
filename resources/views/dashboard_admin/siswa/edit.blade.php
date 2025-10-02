@@ -50,7 +50,7 @@
                         </label>
                         <input type="text" name="nama_siswa" id="nama_siswa"
                             class="mt-1 block w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md focus:border-blue-500 focus:ring-blue-500"
-                            value="{{ old('nama_siswa', $siswa->nama_siswa) }}">
+                            value="{{ old('nama_siswa', $siswa->nama) }}">
                             @error('nama_siswa')
                                 <div class="text-red-500 m-1">
                                     {{ $message = 'Periksa Kembali Nama Siswa' }}
@@ -89,7 +89,7 @@
                             </option>
                             @foreach ($kelas as $item)
                                 <option value="{{ $item->id }}" {{ old('id_kelas', $siswa->id_kelas) == $item->id ? 'selected' : '' }}>
-                                    {{ $item->nama_kelas }}
+                                    {{ $item->nama }}
                                 </option>
                             @endforeach
                         </select>

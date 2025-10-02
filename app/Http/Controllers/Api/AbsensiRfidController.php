@@ -27,7 +27,7 @@ class AbsensiRfidController extends Controller
             return $this->respond('warning', 'kartu belum aktif', 'Kartu RFID ini tidak aktif. Hubungi admin.', 403, $idcard);
         }
 
-        $siswa = Siswa::where('id_idCard', $idcard->id)->first();
+        $siswa = Siswa::where('id_card', $idcard->id)->first();
         if (!$siswa) {
             return $this->respond('warning', 'siswa belum terhubung', 'Kartu belum terhubung dengan siswa. Hubungi admin.', 200, $idcard);
         }
@@ -57,7 +57,7 @@ class AbsensiRfidController extends Controller
 
             // Cek apakah sudah absen hari ini
             $sudahAbsen = Kehadiran::where('id_siswa', $siswa->id)
-                ->whereDate('waktu_tap', $today)
+                ->whereDate('tanggal', $today)
                 ->exists();
 
             if ($sudahAbsen) {
@@ -74,11 +74,9 @@ class AbsensiRfidController extends Controller
             $absen = Kehadiran::create([
                 'id_siswa' => $siswa->id,
                 'uid_rfid' => $uid,
-                'waktu_tap' => $now,
-                // 'type' => 'masuk',
+                'tanggal' => $now,
+                'id_semester' => $siswa->semester->id ?? null,
                 'status' => 'hadir',
-                'id_kelas' => $siswa->kelas->id ?? null,
-                // 'id_perekam' => null,
             ]);
 
             broadcast(new SiswaAbsenEvent($siswa));
@@ -89,12 +87,10 @@ class AbsensiRfidController extends Controller
                 'message' => "Absensi berhasil untuk {$siswa->nama_siswa}.",
                 'data' => [
                     'id_siswa' => $siswa->id,
-                    // 'id_guru' => $absen->id_guru,
-                    // 'id_perekam' => $absen->id_perekam,
                     'id_card_uid' => $siswa->idCard->uid ?? null,
                     'nama_siswa' => $siswa->nama_siswa,
                     'uid_rfid' => $uid,
-                    'waktu_tap' => $absen->waktu_tap->toDateTimeString(),
+                    'tanggal' => $absen->tanggal->toDateTimeString(),
                     'status' => $absen->status,
                 ],
             ], 200);

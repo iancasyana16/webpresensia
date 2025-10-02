@@ -24,18 +24,18 @@ class IzinController extends Controller
     {
         $validated = $request->validate([
             'id_siswa' => 'required|exists:siswas,id',
-            'id_kelas' => 'nullable',
-            'tanggal_izin' => 'required|date',
+            'id_guru' => 'nullable',
+            'tanggal' => 'required|date',
             'alasan' => 'required|string',
             'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         // Ambil id_perekam dari Auth jika tersedia, fallback ke request
-        $validated['id_perekam'] =  $request->input('id_perekam');
+        // $validated['id_perekam'] =  $request->input('id_perekam');
 
-        if (!$validated['id_perekam']) {
-            return response()->json(['message' => 'ID perekam tidak valid'], 422);
-        }
+        // if (!$validated['id_perekam']) {
+        //     return response()->json(['message' => 'ID perekam tidak valid'], 422);
+        // }
 
         // Simpan file jika ada
         if ($request->hasFile('bukti')) {

@@ -10,12 +10,12 @@ return new class extends Migration {
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
             $table->string('nis')->unique();
-            $table->string('nama_siswa');
+            $table->string('nama');
             $table->enum('gender', ['Laki-laki', 'Perempuan']);
-            $table->foreignId('id_kelas')->constrained('kelas')->onDelete('cascade');
-            // $table->foreignId('id_guru')->constrained('gurus')->onDelete('cascade');
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_idCard')->nullable()->unique()->constrained('id_cards')->onDelete('cascade');
+            $table->foreignId('id_user');
+            $table->foreignId('id_angkatan');
+            $table->foreignId('id_kelas')->nullable();
+            $table->foreignId('id_card')->nullable();
             $table->timestamps();
         });
     }

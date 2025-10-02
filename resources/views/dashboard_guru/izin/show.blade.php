@@ -17,7 +17,7 @@
             <div>
                 <label class="block text-sm font-medium mb-2 text-gray-700">Nama</label>
                 <div class="p-3 bg-red-100 rounded shadow-md">
-                    {{ $izin->siswa->nama_siswa }}
+                    {{ $izin->siswa->nama }}
                 </div>
             </div>
             <div>

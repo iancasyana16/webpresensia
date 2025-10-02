@@ -6,15 +6,12 @@
                     No
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-semibold text-white tracking-wider">
-                    Nama Guru</th>
+                    NIP</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-white tracking-wider">
+                    Nama Guru
+                </th>
                 <th class="px-6 py-3 text-left text-xs font-semibold text-white tracking-wider">
                     Gender
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-white tracking-wider">
-                    NIP
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-white tracking-wider">
-                    Mapel
                 </th>
                 <th class="px-6 py-3 text-center text-xs font-semibold text-white tracking-wider">
                     Opsi
@@ -28,17 +25,15 @@
                         {{ $gurus->firstItem() + $index }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {{ $guru->nama_guru }}
+                        {{ $guru->nip }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {{ $guru->nama}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {{ $guru->gender }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {{ $guru->nip }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {{ $guru->mapel }}
-                    </td>
+
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                         <x-button-edit :href="route('edit-guru', $guru)" />
                         <x-button-delete :action="route('delete-guru', $guru->id)" />

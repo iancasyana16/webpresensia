@@ -16,7 +16,7 @@
                         <label for="nama_guru" class="block text-md font-bold">
                             Nama Guru
                         </label>
-                        <input type="text" name="nama_guru" id="nama_guru" value="{{ old('nama_guru', $guru->nama_guru) }}"
+                        <input type="text" name="nama_guru" id="nama_guru" value="{{ old('nama', $guru->nama) }}"
                             class="mt-1 block w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md focus:border-blue-500 focus:ring-blue-500">
                         @error('nama_guru')
                             <div class="text-red-500 m-1">
@@ -55,40 +55,6 @@
                         @error('gender')
                             <div class="text-red-500 m-1">
                                 {{ $message = 'Periksa Kembali Gender Guru' }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="mapel" class="block text-md font-bold">
-                            Mata Pelajaran
-                        </label>
-                        <select name="mapel" id="mapel"
-                            class="mt-1 block w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">
-                                Pilih Mata Pelajaran
-                            </option>
-                            <option value="Matematika" {{ old('mapel', $guru->mapel) == 'Matematika' ? 'selected' : '' }}>
-                                Matematika
-                            </option>
-                            <option value="Bahasa Indonesia" {{ old('mapel', $guru->mapel) == 'Bahasa Indonesia' ? 'selected' : '' }}>
-                                Bahasa Indonesia
-                            </option>
-                            <option value="Bahasa Inggris" {{ old('mapel', $guru->mapel) == 'Bahasa Inggris' ? 'selected' : '' }}>
-                                Bahasa Inggris
-                            </option>
-                            <option value="IPA" {{ old('mapel', $guru->mapel) == 'IPA' ? 'selected' : '' }}>
-                                IPA
-                            </option>
-                            <option value="IPS" {{ old('mapel', $guru->mapel) == 'IPS' ? 'selected' : '' }}>
-                                IPS
-                            </option>
-                            <option value="PAI" {{ old('mapel', $guru->mapel) == 'PAI' ? 'selected' : '' }}>
-                                PAI
-                            </option>
-                        </select>
-                        @error('mapel')
-                            <div class="text-red-500 m-1">
-                                {{ $message = 'Periksa Kembali NIP Guru' }}
                             </div>
                         @enderror
                     </div>

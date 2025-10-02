@@ -61,8 +61,12 @@ class AuthLoginController extends Controller
             'data' => [
                 'id' => $user->id,
                 'username' => $user->username,
+                'nama_siswa' => $user->siswa->nama ?? null,
+                'nis' => $user->siswa->nis ?? null,
+                'gender' => $user->siswa->gender ?? null,
                 'id_siswa' => $user->siswa->id,
                 'id_kelas' => $user->siswa->kelas->id,
+                'id_guru' => $user->siswa->kelas->guru->id ?? null,
                 'id_perekam' => auth()->user()->id,
                 'id_idCard' => $user->siswa->idCard->uid,
                 'role' => $user->role,

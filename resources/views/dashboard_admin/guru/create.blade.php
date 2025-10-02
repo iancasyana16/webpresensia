@@ -57,40 +57,6 @@
                             </div>
                         @enderror
                     </div>
-                    <div class="mb-3">
-                        <label for="mapel" class="block text-md font-bold">
-                            Mata Pelajaran
-                        </label>
-                        <select name="mapel" id="mapel"
-                            class="mt-1 block w-full border border-gray-100 bg-white p-2 rounded-md h-10 shadow-md focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">
-                                Pilih Mata Pelajaran
-                            </option>
-                            <option value="Matematika" {{ old('mapel', $guru->mapel) == 'Matematika' ? 'selected' : '' }}>
-                                Matematika
-                            </option>
-                            <option value="Bahasa Indonesia" {{ old('mapel', $guru->mapel) == 'Bahasa Indonesia' ? 'selected' : '' }}>
-                                Bahasa Indonesia
-                            </option>
-                            <option value="Bahasa Inggris" {{ old('mapel', $guru->mapel) == 'Bahasa Inggris' ? 'selected' : '' }}>
-                                Bahasa Inggris
-                            </option>
-                            <option value="IPA" {{ old('mapel', $guru->mapel) == 'IPA' ? 'selected' : '' }}>
-                                IPA
-                            </option>
-                            <option value="IPS" {{ old('mapel', $guru->mapel) == 'IPS' ? 'selected' : '' }}>
-                                IPS
-                            </option>
-                            <option value="PAI" {{ old('mapel', $guru->mapel) == 'PAI' ? 'selected' : '' }}>
-                                PAI
-                            </option>
-                        </select>
-                        @error('mapel')
-                            <div class="text-red-500 m-1">
-                                {{ $message = 'Periksa Kembali Mapel Guru' }}
-                            </div>
-                        @enderror
-                    </div>
                     <div class="mb-3 text-end">
                         <button type="button" onclick="location.href='{{ route('dashboard-admin-guru') }}'"
                             class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md shadow-sm text-sm font-bold cursor-pointer text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">

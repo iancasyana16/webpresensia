@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Guru;
 
+use Carbon\Carbon;
 use App\Models\Siswa;
+use App\Models\Semester;
 use App\Models\Kehadiran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,15 +28,18 @@ class AbsenSiswaController extends Controller
         $siswas = $kelas->siswa;
         $today = now()->toDateString();
 
-        $kehadiranHariIni = Kehadiran::whereDate('waktu_tap', $today)
+        $kehadiranHariIni = Kehadiran::whereDate('tanggal', $today)
             ->whereIn('id_siswa', $siswas->pluck('id')) // ✅ fix
             ->get();
 
         $kehadiranMap = $kehadiranHariIni->keyBy('id_siswa');
 
+        // dd($siswas);
+
         return view('dashboard_guru.absen.index', [
             'title' => 'Absen Siswa',
             'siswas' => $siswas,
+            'guru' => Auth::user()->guru,
             'kehadiranMap' => $kehadiranMap,
         ]);
     }
@@ -55,16 +60,31 @@ class AbsenSiswaController extends Controller
 
     public function store(Request $request)
     {
-        // dd('MASUK STORE', $request->all());   
+        // 1. Ambil semester aktif otomatis
+        $semesterAktif = Semester::whereDate('mulai', '<=', now())
+            ->whereDate('selesai', '>=', now())
+            ->first();
+
+            // dd($semesterAktif);
+
+        if (!$semesterAktif) {
+            // dd('Belum ada semester aktif, silakan buat semester dulu.');
+            return redirect()->route('dashboard-guru-absen')->with('success', 'Belum ada semester aktif, silakan buat semester dulu.');
+        }
+
+        // 2. Validasi input dari request
         $validated = $request->validate([
-            'id_siswa' => 'required',
-            'id_kelas' => 'required',
-            'waktu_tap' => 'required',
-            'status' => 'required',
+            'id_siswa' => 'required|exists:siswas,id',
+            'status' => 'required|in:hadir,izin,alfa',
             'catatan' => 'nullable|string|max:255',
         ]);
-        // dd($request->all());
 
+        // 3. Tambahkan otomatis field yang tidak dikirim dari form
+        $validated['id_semester'] = $semesterAktif->id;
+        $validated['tanggal'] = now()->toDateString();
+        $validated['jam'] = now()->toTimeString();
+
+        // 4. Simpan data
         Kehadiran::create($validated);
 
         return redirect()->route('dashboard-guru-absen')->with('success', 'Absen manual berhasil disimpan.');
